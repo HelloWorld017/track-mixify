@@ -1,7 +1,7 @@
 class Queue {
-	constructor(queueId, queueName) {
+	constructor(queueId, chat) {
 		this.id = queueId;
-		this.name = queueName;
+		this.chat = chat;
 		this.queue = [];
 		this.all = [];
 	}
@@ -9,29 +9,40 @@ class Queue {
 	add(songObject) {
 		this.queue.push(songObject);
 		this.all.push(songObject);
+		this.onChange(true);
 	}
 
 	remove(index) {
 		this.queue.splice(index, 1);
+		this.onChange(true);
 	}
 
 	next() {
 		if(this.queue.length === 0) return null;
-		return this.queue.shift();
+		const nextItem = this.queue.shift();
+		this.onChange(false);
+		
+		return nextItem;
+	}
+	
+	onChange(emit) {
+		if(emit) {
+			this.chat.bot.emit('refresh');
+		}
+		
+		this.chat.save();
 	}
 
 	serialize() {
 		return {
 			id: this.id,
-			name: this.name,
 			queue: this.queue,
 			all: this.queue
 		};
 	}
 
-	static deserialize(queueObj) {
-		const queue = new Queue(queueObj.id);
-		queue.name = queueObj.name;
+	static deserialize(queueObj, chat) {
+		const queue = new Queue(queueObj.id, chat);
 		queue.queue = queueObj.queue;
 		queue.all = queueObj.all;
 

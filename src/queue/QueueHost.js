@@ -44,8 +44,6 @@ class QueueHost {
 		let previousRobin = null;
 
 		const musicQueue = [];
-		if(queues[robin].queue[0])
-			musicQueue.push(queues[robin].queue[0]);
 
 		do {
 			previousRobin = robin;

@@ -32,12 +32,18 @@ const Bot = require("./src/Bot");
 		next();
 	});
 
-	app.get('/:token/', (req, res) => {
+	app.get('/:token', (req, res) => {
 		res.sendFile(path.resolve(__dirname, './app/dist/index.html'));
 	});
 
 	app.post('/:token/next', (req, res) => {
-		res.json(req.chat.hostQueue.next());
+		const nextItem = req.chat.hostQueue.next();
+		const queue = req.chat.hostQueue.queue;
+		
+		res.json({
+			next: nextItem,
+			queue
+		});
 	});
 
 	app.get('/:token/queue', (req, res) => {
@@ -51,7 +57,7 @@ const Bot = require("./src/Bot");
 
 	const io = socketIo(server);
 	io.on('connection', socket => {
-		socket.on('authentication', token => {
+		socket.on('authenticate', token => {
 			if(bot.tokens.includes(token)) {
 				socket.join(token);
 			}

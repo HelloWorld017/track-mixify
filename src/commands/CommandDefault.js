@@ -74,7 +74,6 @@ class CommandDefault extends Command {
 		this.bot.sendHtml("성공적으로 추가했습니다", message.chat.id, {
 			reply_to_message_id: message.message_id
 		});
-		await chat.save();
 	}
 }
 

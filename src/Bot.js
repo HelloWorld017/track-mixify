@@ -74,7 +74,7 @@ class Bot extends EventEmitter {
 
 	getChat(chatId) {
 		if(!this.chats.hasOwnProperty(chatId))
-			this.chats[chatId] = new Chat(chatId);
+			this.chats[chatId] = new Chat(chatId, this);
 
 		return this.chats[chatId];
 	}
@@ -86,7 +86,7 @@ class Bot extends EventEmitter {
 				const chatStr = await fs.promises.readFile(path.join('./chats', chatFile), 'utf-8');
 				const chatObj = JSON.parse(chatStr);
 
-				this.chats[chatObj.id] = Chat.deserialize(chatObj);
+				this.chats[chatObj.id] = Chat.deserialize(chatObj, this);
 			}
 		} catch(e) {}
 	}

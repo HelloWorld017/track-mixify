@@ -3,16 +3,19 @@ const Queue = require('./queue/Queue');
 const QueueHost = require('./queue/QueueHost');
 
 class Chat {
-	constructor(chatId) {
+	constructor(chatId, bot) {
+		this.bot = bot;
 		this.id = chatId;
 		this.users = {};
 		this.hostQueue = new QueueHost();
 		this.queues = {};
+		this.lastSaveRequest = 0;
+		this.lastSave = 0;
 	}
 
 	getQueue(queueId) {
 		if(!this.queues.hasOwnProperty(queueId))
-			this.queues[queueId] = new Queue(queueId);
+			this.queues[queueId] = new Queue(queueId, this);
 
 		return this.queues[queueId];
 	}
@@ -31,7 +34,18 @@ class Chat {
 		return user.id;
 	}
 
-	async save() {
+	save(force = false) {
+		const now = Date.now();
+		this.lastSaveRequest = now;
+		setTimeout(() => this.saveFinalize(now), 5000);
+	}
+	
+	async saveFinalize(now) {
+		if(now !== this.lastSaveRequest && now - this.lastSave < 10000) {
+			return;
+		}
+		this.lastSave = Date.now();
+		
 		const chat = JSON.stringify(this.serialize());
 		await fs.promises.writeFile(sanitizeFilename(`./chat/${this.id}.json`), chat);
 	}
@@ -45,11 +59,11 @@ class Chat {
 		};
 	}
 
-	static deserialize(chatObj) {
-		const chat = new Chat(chatObj.id);
+	static deserialize(chatObj, bot) {
+		const chat = new Chat(chatObj.id, bot);
 		chat.users = chatObj.users;
 		chatObj.queues.forEach(queueObj => {
-			const queue = Queue.deserialize(queueObj);
+			const queue = Queue.deserialize(queueObj, chat);
 			chat.queues[queue.id] = queue;
 		});
 	}
