@@ -10,6 +10,7 @@ const EventEmitter = require('events');
 
 class Bot extends EventEmitter {
 	constructor(config) {
+		super();
 		this.chats = {};
 		this.tokens = {};
 		this.commands = commands(this);

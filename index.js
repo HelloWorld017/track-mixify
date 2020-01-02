@@ -3,6 +3,7 @@ const config = require('./config.json');
 const express = require('express');
 const http = require('http');
 const path = require('path');
+const socketIo = require('socket.io');
 
 const Bot = require("./src/Bot");
 
