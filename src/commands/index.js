@@ -4,6 +4,7 @@ const CommandQueue = require('./CommandQueue');
 module.exports = bot => {
 	const commands = [
 		CommandQueue,
+		CommandHost,
 		CommandDefault
 	];
 

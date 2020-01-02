@@ -1,3 +1,4 @@
+const fs = require('fs');
 const sanitizeFilename = require('sanitize-filename');
 const Queue = require('./queue/Queue');
 const QueueHost = require('./queue/QueueHost');

@@ -1,3 +1,5 @@
+const Command = require('./Command');
+
 class CommandHost extends Command {
 	constructor(bot) {
 		super(bot, '호스트');
@@ -13,11 +15,17 @@ class CommandHost extends Command {
 				delete this.bot.tokens[key];
 		});
 
-		this.bot.sendHtml(
-			`<a href="${this.bot.config.target}/${token}">여기를 눌러 호스트</a>`,
-			update.message.from.id
-		);
+		try {
+			this.bot.sendHtml(
+				`<a href="${this.bot.config.target}/${token}">여기를 눌러 호스트</a>`,
+				update.message.from.id
+			);
+		} catch(e) {
+			return '봇에게 먼저 말을 걸어주세요!';
+		}
+		
+		return '개인톡을 확인해주세요!';
 	}
 }
 
-module.exports = CommandQueue;
+module.exports = CommandHost;
