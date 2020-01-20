@@ -1,6 +1,6 @@
 <template>
 	<div class="TmPlayerFile">
-		<audio ref="audio" autoplay @ended="$emit('end')">
+		<audio ref="audio" autoplay @ended="$emit('end')"></audio>
 	</div>
 </template>
 

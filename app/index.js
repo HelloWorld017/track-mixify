@@ -67,4 +67,6 @@ Vue.use(Vuex);
 			return h(App);
 		}
 	});
+
+	store.dispatch('refreshQueue');
 })();

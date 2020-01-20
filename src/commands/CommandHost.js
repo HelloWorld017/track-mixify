@@ -9,11 +9,11 @@ class CommandHost extends Command {
 		const chatId = update.message.chat.id;
 		const token = Math.random().toString(36).slice(2);
 
-		this.bot.tokens[token] = chatId;
 		Object.keys(this.bot.tokens).forEach(key => {
 			if(this.bot.tokens[key] === chatId)
 				delete this.bot.tokens[key];
 		});
+		this.bot.tokens[token] = chatId;
 
 		try {
 			this.bot.sendHtml(

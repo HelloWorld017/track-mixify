@@ -34,7 +34,7 @@ const Bot = require("./src/Bot");
 	});
 
 	app.get('/:token', (req, res) => {
-		res.sendFile(path.resolve(__dirname, './app/dist/index.html'));
+		res.sendFile(path.resolve(__dirname, './app/dist/token.html'));
 	});
 
 	app.post('/:token/next', (req, res) => {
@@ -51,7 +51,7 @@ const Bot = require("./src/Bot");
 		res.json(req.chat.hostQueue.queue);
 	});
 
-	app.use(express.static(path.resolve(__dirname, 'app', 'dist')));
+	app.use('/dist', express.static(path.resolve(__dirname, 'app', 'dist')));
 
 	const server = http.createServer(app);
 	server.listen(config.port);
@@ -59,13 +59,15 @@ const Bot = require("./src/Bot");
 	const io = socketIo(server);
 	io.on('connection', socket => {
 		socket.on('authenticate', token => {
-			if(bot.tokens.includes(token)) {
-				socket.join(token);
+			if(bot.tokens.hasOwnProperty(token)) {
+				console.log(bot.tokens[token]);
+				socket.join(bot.tokens[token]);
 			}
 		});
 	});
 
-	bot.on('refresh', token => {
-		io.of(token).emit('refresh');
+	bot.on('refresh', chatid => {
+		console.log("refresh", chatid);
+		io.to(chatid).emit('refresh');
 	});
 })();

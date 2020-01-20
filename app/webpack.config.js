@@ -44,7 +44,7 @@ const lessLoader = [
 
 module.exports = {
 	entry: {
-		qnak: path.resolve(__dirname, 'app', 'index.js')
+		trackmixify: path.resolve(__dirname, 'index.js')
 	},
 
 	output: {

@@ -7,6 +7,9 @@ class Queue {
 	}
 
 	add(songObject) {
+		const user = this.chat.users[this.id];
+		songObject.owner = user.username || user.id;
+
 		this.queue.push(songObject);
 		this.all.push(songObject);
 		this.onChange(true);
@@ -27,7 +30,7 @@ class Queue {
 	
 	onChange(emit) {
 		if(emit) {
-			this.chat.bot.emit('refresh');
+			this.chat.bot.emit('refresh', this.chat.id);
 		}
 		
 		this.chat.save();
@@ -37,7 +40,7 @@ class Queue {
 		return {
 			id: this.id,
 			queue: this.queue,
-			all: this.queue
+			all: this.all
 		};
 	}
 

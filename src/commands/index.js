@@ -1,4 +1,5 @@
 const CommandDefault = require('./CommandDefault');
+const CommandHost = require('./CommandHost');
 const CommandQueue = require('./CommandQueue');
 
 module.exports = bot => {

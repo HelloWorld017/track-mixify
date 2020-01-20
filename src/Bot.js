@@ -82,11 +82,11 @@ class Bot extends EventEmitter {
 
 	async load() {
 		try {
-			const chats = await fs.promises.readdir('./chats');
+			const chats = await fs.promises.readdir('./chat');
 			for (const chatFile of chats) {
-				const chatStr = await fs.promises.readFile(path.join('./chats', chatFile), 'utf-8');
+				const chatStr = await fs.promises.readFile(path.join('./chat', chatFile), 'utf-8');
 				const chatObj = JSON.parse(chatStr);
-
+				
 				this.chats[chatObj.id] = Chat.deserialize(chatObj, this);
 			}
 		} catch(e) {}

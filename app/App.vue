@@ -5,9 +5,18 @@
 	</div>
 </template>
 
+<style lang="less">
+	html, body {
+		margin: 0;
+		padding: 0;
+	}
+</style>
+
 <style lang="less" scoped>
 	.App {
 		display: flex;
+		width: 100vw;
+		height: 100vh;
 	}
 	
 	@media(max-width: 768px) {

@@ -8,7 +8,7 @@ class Chat {
 		this.bot = bot;
 		this.id = chatId;
 		this.users = {};
-		this.hostQueue = new QueueHost();
+		this.hostQueue = new QueueHost('Host', this);
 		this.queues = {};
 		this.lastSaveRequest = 0;
 		this.lastSave = 0;
@@ -48,7 +48,7 @@ class Chat {
 		this.lastSave = Date.now();
 		
 		const chat = JSON.stringify(this.serialize());
-		await fs.promises.writeFile(sanitizeFilename(`./chat/${this.id}.json`), chat);
+		await fs.promises.writeFile(`./chat/${sanitizeFilename(`${this.id}.json`)}`, chat);
 	}
 
 	serialize() {
@@ -67,6 +67,7 @@ class Chat {
 			const queue = Queue.deserialize(queueObj, chat);
 			chat.queues[queue.id] = queue;
 		});
+		return chat;
 	}
 }
 
